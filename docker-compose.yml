@@ -14,6 +14,8 @@ services:
   # Mongo Express (Web UI for MongoDB)
   mongo-express:
     image: mongo-express
+    env_file:
+      - ./backend/.env
     container_name: mongo_express_container
     restart: always
     depends_on:
@@ -23,12 +25,14 @@ services:
     environment:
       - ME_CONFIG_MONGODB_SERVER=mongo
       - ME_CONFIG_MONGODB_PORT=27017
-      - ME_CONFIG_BASICAUTH_USERNAME=admin
-      - ME_CONFIG_BASICAUTH_PASSWORD=admin
+      - ME_CONFIG_BASICAUTH_USERNAME=${BASICAUTH_USERNAME}
+      - ME_CONFIG_BASICAUTH_PASSWORD=${BASICAUTH_PASSWORD}
 
   # Node.js Backend Service
   backend:
     build: ./backend
+    env_file:
+      - ./backend/.env
     container_name: backend_container
     restart: always
     ports:
@@ -39,7 +43,7 @@ services:
       - ./backend:/app
       - /app/node_modules # Avoid overwriting node_modules
     environment:
-      - MONGO_URI=mongodb://mongo:27017/todo
+      - MONGO_URI=${MONGO_URI}
     command: ["npm", "run", "dev"] # Enable hot reload with Nodemon
 
   # React Frontend Service
