@@ -13,8 +13,7 @@ function App() {
 
   return (
     <div>
-      <h1>hellossszzz?</h1>
-
+      <h1>Todo App</h1>
       <ul>
         {tasks &&
           tasks.map((task) => (
